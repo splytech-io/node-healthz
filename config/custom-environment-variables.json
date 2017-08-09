@@ -1,0 +1,6 @@
+{
+  "healthz": {
+    "enable": "HEALTHZ_ENABLE",
+    "port": "HEALTHZ_PORT"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@splytech-io/healthz",
+  "version": "0.1.0",
+  "description": "Kubernetes healthz service",
+  "main": "src/healthz.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "kubernetes",
+    "healthz",
+    "http",
+    "probe"
+  ],
+  "author": "Andrius Skerla",
+  "license": "ISC",
+  "dependencies": {
+    "@rainder/config": "^0.1.1",
+    "koa": "^2.3.0"
+  },
+  "devDependencies": {
+    "@splytech-io/eslint-config": "0.0.4",
+    "eslint": "^4.4.1",
+    "mocha": "^3.5.0",
+    "supertest": "^3.0.0"
+  }
+}

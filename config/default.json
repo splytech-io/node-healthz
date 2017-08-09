@@ -1,0 +1,6 @@
+{
+  "healthz": {
+    "enable": true,
+    "port": 7020
+  }
+}
