@@ -23,5 +23,16 @@
     "eslint": "^4.4.1",
     "mocha": "^3.5.0",
     "supertest": "^3.0.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/splytech-io/node-healthz.git"
+  },
+  "bugs": {
+    "url": "https://github.com/splytech-io/node-healthz/issues"
+  },
+  "homepage": "https://github.com/splytech-io/node-healthz#readme"
 }
