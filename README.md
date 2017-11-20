@@ -2,7 +2,7 @@
 
 Listens to 7020 http port. Configurable through `config` file.
 
-Exposes `/healthy` (readiness probe) and `/healtzh` (liveness probe) endpoints which can be used by Kubernetes.
+Exposes `/healthy` (readiness probe) and `/healthz` (liveness probe) endpoints which can be used by Kubernetes.
 
 
 ```js
