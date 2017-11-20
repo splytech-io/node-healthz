@@ -1,8 +1,9 @@
 {
   "name": "@splytech-io/healthz",
-  "version": "0.2.0",
+  "version": "0.1.2",
   "description": "Kubernetes healthz service",
   "main": "src/healthz.js",
+  "types": "src/healthz",
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsc -d",
