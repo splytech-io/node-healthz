@@ -1,24 +1,23 @@
 'use strict';
 
-const Koa = require('koa');
-const config = require('@rainder/config');
+import * as Koa from 'koa';
+import * as config from 'config';
 
-const CONFIG = config.init({
-  ENABLE: 'healthz.enable',
-  PORT: 'healthz.port',
-});
+const CONFIG = {
+  ENABLE: config.get('healthz.enable'),
+  PORT: config.get('healthz.port'),
+};
 
-module.exports = new class Healthz extends Koa {
+class Healthz extends Koa {
+  live = true;
+  ready = false;
   /**
    *
    */
   constructor() {
     super();
 
-    this.live = true;
-    this.ready = false;
-
-    this.listen();
+    this.start();
     this.use(Healthz.probe('/healthz', () => this.live));
     this.use(Healthz.probe('/healthy', () => this.ready));
   }
@@ -29,8 +28,8 @@ module.exports = new class Healthz extends Koa {
    * @param getter
    * @returns {function(*, *)}
    */
-  static probe(path, getter) {
-    return (ctx, next) => {
+  static probe(path: string, getter: () => boolean) {
+    return (ctx: Koa.Context, next: Function) => {
       if (ctx.path !== path) {
         return next();
       }
@@ -70,17 +69,16 @@ module.exports = new class Healthz extends Koa {
   /**
    *
    */
-  listen() {
+  start() {
     if (`${CONFIG.ENABLE}` !== 'true') {
       return;
     }
 
-    super.listen(CONFIG.PORT, (err) => {
-      if (err) {
-        throw err;
-      }
-
-      console.log(`HTTP Health check is listening on 0.0.0.0:${CONFIG.PORT}`);
-    });
+    return super.listen(CONFIG.PORT, () =>
+      console.log(`HTTP Health check is listening on 0.0.0.0:${CONFIG.PORT}`)
+    );
   }
 };
+
+export = new Healthz();
+

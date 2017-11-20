@@ -1,12 +1,9 @@
 'use strict';
 
-process.env.HEALTHZ_ENABLE = 0;
-
 const request = require('supertest');
 const app = require('../src/healthz');
 
 describe('unit-tests', () => {
-
   it('should setup initial state', async function () {
     await request(app.callback()).get('/healthz').expect(200);
     await request(app.callback()).get('/healthy').expect(503);
@@ -39,5 +36,4 @@ describe('unit-tests', () => {
     await request(app.callback()).get('/healthz').expect(503);
     await request(app.callback()).get('/healthy').expect(503);
   });
-
 });
