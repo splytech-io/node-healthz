@@ -1,5 +1,6 @@
 'use strict';
 
+import { Server } from 'http';
 import * as Koa from 'koa';
 import * as config from 'config';
 
@@ -8,7 +9,7 @@ const CONFIG = {
   PORT: config.get('healthz.port'),
 };
 
-class Healthz extends Koa {
+export class Healthz extends Koa {
   live = true;
   ready = false;
   /**
@@ -69,16 +70,17 @@ class Healthz extends Koa {
   /**
    *
    */
-  start() {
+  start(): Server|undefined {
     if (`${CONFIG.ENABLE}` !== 'true') {
       return;
     }
 
     return super.listen(CONFIG.PORT, () =>
+      /*tslint:disable-next-line*/
       console.log(`HTTP Health check is listening on 0.0.0.0:${CONFIG.PORT}`)
     );
   }
-};
+}
 
-export = new Healthz();
+export default new Healthz();
 
