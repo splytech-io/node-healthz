@@ -1,6 +1,6 @@
 {
   "name": "@splytech-io/healthz",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Kubernetes healthz service",
   "main": "src/healthz.js",
   "typings": "src/healthz.d.ts",
