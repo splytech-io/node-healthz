@@ -11,7 +11,7 @@ export class Healthz extends Koa {
   /**
    *
    */
-  constructor(private port: number = 7020, private host: string = '0.0.0.0') {
+  constructor(public port: number = 7020, public host: string = '0.0.0.0') {
     super();
 
     this.use(Healthz.probe('/healthz', () => this.live));
@@ -69,9 +69,6 @@ export class Healthz extends Koa {
   async start(): Promise<Server> {
     return new Promise<Server>(((resolve) => {
       this.server = super.listen(this.port, () => {
-        /*tslint:disable-next-line*/
-        console.log(`HTTP Health check is listening on ${this.host}:${this.port}`);
-
         resolve(this.server);
       });
     }));
