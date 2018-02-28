@@ -68,7 +68,7 @@ export class Healthz extends Koa {
    */
   async start(): Promise<Server> {
     return new Promise<Server>(((resolve) => {
-      this.server = super.listen(this.port, () => {
+      this.server = super.listen(this.port, this.host, () => {
         resolve(this.server);
       });
     }));
