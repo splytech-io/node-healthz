@@ -2,32 +2,27 @@
 
 import { Server } from 'http';
 import * as Koa from 'koa';
-import * as config from 'config';
-
-const CONFIG = {
-  ENABLE: config.get('healthz.enable'),
-  PORT: config.get('healthz.port'),
-};
 
 export class Healthz extends Koa {
-  live = true;
-  ready = false;
+  private live = true;
+  private ready = false;
+  private server?: Server;
+
   /**
    *
    */
-  constructor() {
+  constructor(private port: number = 7020, private host: string = '0.0.0.0') {
     super();
 
-    this.start();
     this.use(Healthz.probe('/healthz', () => this.live));
     this.use(Healthz.probe('/healthy', () => this.ready));
   }
 
   /**
    *
-   * @param path
-   * @param getter
-   * @returns {function(*, *)}
+   * @param {string} path
+   * @param {() => boolean} getter
+   * @returns {(ctx: Application.Context, next: Function) => any}
    */
   static probe(path: string, getter: () => boolean) {
     return (ctx: Koa.Context, next: Function) => {
@@ -47,8 +42,8 @@ export class Healthz extends Koa {
 
   /**
    *
-   * @param value
-   * @returns {Healthz}
+   * @param {boolean} value
+   * @returns {this}
    */
   setReady(value = true) {
     this.ready = value;
@@ -58,8 +53,8 @@ export class Healthz extends Koa {
 
   /**
    *
-   * @param value
-   * @returns {Healthz}
+   * @param {boolean} value
+   * @returns {this}
    */
   setLive(value = true) {
     this.live = value;
@@ -69,18 +64,31 @@ export class Healthz extends Koa {
 
   /**
    *
+   * @returns {Promise<"http".Server>}
    */
-  start(): Server|undefined {
-    if (`${CONFIG.ENABLE}` !== 'true') {
-      return;
-    }
+  async start(): Promise<Server> {
+    return new Promise<Server>(((resolve) => {
+      this.server = super.listen(this.port, () => {
+        /*tslint:disable-next-line*/
+        console.log(`HTTP Health check is listening on ${this.host}:${this.port}`);
 
-    return super.listen(CONFIG.PORT, () =>
-      /*tslint:disable-next-line*/
-      console.log(`HTTP Health check is listening on 0.0.0.0:${CONFIG.PORT}`)
-    );
+        resolve(this.server);
+      });
+    }));
+  }
+
+  /**
+   *
+   * @returns {Promise<void>}
+   */
+  async stop(): Promise<void> {
+    await new Promise((resolve, reject) => {
+      if (!this.server) {
+        return reject(new Error('not started'));
+      }
+
+      this.server.close((err: any) => err ? reject(err) : resolve());
+    });
   }
 }
-
-export default new Healthz();
 

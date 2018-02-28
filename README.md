@@ -1,27 +1,16 @@
 # Kubernetes health check server
 
-Listens to 7020 http port. Configurable through `config` file.
-
 Exposes `/healthy` (readiness probe) and `/healthz` (liveness probe) endpoints which can be used by Kubernetes.
 
 
 ```js
-const healthz = require('@splytech-io/healthz');
+import { Healthz } from '@splytech-io/healthz';
+
+const healthz = new Healthz(7020, '0.0.0.0');
 
 // - call whenever server is ready to accept connections
 healthz.setReady(true);
 
 // - used to set liveness probe
 healthz.setLive(true);
-```
-
-
-## Config file definition
-
-default.yml
-
-```yaml
-healthz:
-  enable: true
-  port: 7020
 ```

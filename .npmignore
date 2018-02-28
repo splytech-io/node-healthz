@@ -1,2 +1,6 @@
 config
 test
+*.spec.ts
+coverage
+.nyc_output
+!*.d.ts

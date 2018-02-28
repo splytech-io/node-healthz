@@ -3,12 +3,11 @@
   "version": "0.2.1",
   "description": "Kubernetes healthz service",
   "main": "src/healthz.js",
-  "types": "src/healthz",
+  "typings": "src/healthz.d.ts",
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsc -d",
-    "test:dev": "ts-mocha -b test/*.spec.ts --watch --watch-extensions ts",
-    "test": "ts-mocha -b test/*.spec.ts",
+    "test": "mocha --require ts-node/register src/*.spec.ts",
     "lint": "tslint -p ."
   },
   "keywords": [
@@ -20,19 +19,16 @@
   "author": "Andrius Skerla",
   "license": "ISC",
   "dependencies": {
-    "@rainder/config": "^0.1.1",
-    "config": "^1.28.1",
-    "js-yaml": "^3.10.0",
     "koa": "^2.3.0"
   },
   "devDependencies": {
-    "@types/config": "0.0.33",
     "@types/koa": "^2.0.40",
-    "@types/mocha": "^2.2.44",
+    "@types/mocha": "^2.2.48",
+    "@types/node": "^9.4.6",
     "@types/supertest": "^2.0.3",
     "mocha": "^3.5.0",
     "supertest": "^3.0.0",
-    "ts-mocha": "^1.0.3",
+    "ts-node": "^5.0.0",
     "tslint": "^5.8.0",
     "tslint-eslint-rules": "^4.1.1",
     "typescript": "^2.6.1"
