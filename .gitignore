@@ -131,4 +131,5 @@ typings/
 .env
 
 **.js
+**.js.map
 **.d.ts
