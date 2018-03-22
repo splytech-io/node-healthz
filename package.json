@@ -1,6 +1,6 @@
 {
   "name": "@splytech-io/healthz",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Kubernetes healthz service",
   "main": "src/healthz.js",
   "typings": "src/healthz.d.ts",
@@ -19,10 +19,10 @@
   "author": "Andrius Skerla",
   "license": "ISC",
   "dependencies": {
+    "@types/koa": "^2.0.40",
     "koa": "^2.3.0"
   },
   "devDependencies": {
-    "@types/koa": "^2.0.40",
     "@types/mocha": "^2.2.48",
     "@types/node": "^9.4.6",
     "@types/supertest": "^2.0.3",
