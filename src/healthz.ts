@@ -1,9 +1,9 @@
 'use strict';
 
 import { Server } from 'http';
-import * as Koa from 'koa';
+import Application = require('koa');
 
-export class Healthz extends Koa {
+export class Healthz extends Application {
   private live = true;
   private ready = false;
   private server?: Server;
@@ -25,12 +25,12 @@ export class Healthz extends Koa {
    * @returns {(ctx: Application.Context, next: Function) => any}
    */
   static probe(path: string, getter: () => boolean) {
-    return (ctx: Koa.Context, next: Function) => {
+    return (ctx: Application.Context, next: Function) => {
       if (ctx.path !== path) {
         return next();
       }
 
-      if (getter() === true) {
+      if (getter()) {
         ctx.status = 200;
         ctx.body = 'ok';
       } else {
