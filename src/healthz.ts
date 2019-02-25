@@ -2,22 +2,23 @@
 
 import { Server } from 'http';
 import Application = require('koa');
+import compose = require('koa-compose');
 
-export class Healthz extends Application {
+export class Healthz {
   private live = true;
   private ready = false;
   private server?: Server;
+  private app: Application;
 
   /**
    *
    */
   constructor(public port: number = 7020, public host: string = '0.0.0.0') {
-    super();
-
-    this.use(Healthz.probe('/healthz', () => this.live));
-    this.use(Healthz.probe('/liveness-probe', () => this.live));
-    this.use(Healthz.probe('/healthy', () => this.ready));
-    this.use(Healthz.probe('/readiness-probe', () => this.ready));
+    this.app = new Application();
+    this.app.use(Healthz.probe('/healthz', () => this.live));
+    this.app.use(Healthz.probe('/liveness-probe', () => this.live));
+    this.app.use(Healthz.probe('/healthy', () => this.ready));
+    this.app.use(Healthz.probe('/readiness-probe', () => this.ready));
   }
 
   /**
@@ -64,13 +65,21 @@ export class Healthz extends Application {
     return this;
   }
 
+  middleware() {
+    return compose(this.app.middleware);
+  }
+
+  callback() {
+    return this.app.callback();
+  }
+
   /**
    *
    * @returns {Promise<"http".Server>}
    */
   async start(): Promise<Server> {
     return new Promise<Server>(((resolve) => {
-      this.server = super.listen(this.port, this.host, () => {
+      this.server = this.app.listen(this.port, this.host, () => {
         resolve(this.server);
       });
     }));
