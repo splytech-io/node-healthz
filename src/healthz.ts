@@ -15,7 +15,9 @@ export class Healthz extends Application {
     super();
 
     this.use(Healthz.probe('/healthz', () => this.live));
+    this.use(Healthz.probe('/liveness-probe', () => this.live));
     this.use(Healthz.probe('/healthy', () => this.ready));
+    this.use(Healthz.probe('/readiness-probe', () => this.ready));
   }
 
   /**
