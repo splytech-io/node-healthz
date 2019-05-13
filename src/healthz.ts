@@ -13,12 +13,10 @@ export class Healthz {
   /**
    *
    */
-  constructor(public port: number = 7020, public host: string = '0.0.0.0') {
+  constructor(public port: number = 7020, public host: string = '0.0.0.0', liveness = '/healthz', readiness = '/healthy') {
     this.app = new Application();
-    this.app.use(Healthz.probe('/healthz', () => this.live));
-    this.app.use(Healthz.probe('/liveness-probe', () => this.live));
-    this.app.use(Healthz.probe('/healthy', () => this.ready));
-    this.app.use(Healthz.probe('/readiness-probe', () => this.ready));
+    this.app.use(Healthz.probe(liveness, () => this.live));
+    this.app.use(Healthz.probe(readiness, () => this.ready));
   }
 
   /**
